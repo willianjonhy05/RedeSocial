@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LoginScreen({ navigation, setIsLoggedIn }) {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  // Verifica se o usuário já está logado
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const loggedIn = await AsyncStorage.getItem('loggedIn');
+        if (loggedIn === 'true') {
+          navigation.replace('Home');
+        }
+      } catch (error) {
+        console.error("Erro ao verificar status de login:", error);
+      }
+    };
+    checkLoginStatus();
+  }, [navigation]);
+
+  const handleLogin = async () => {
     if (email === 'admin@admin.com' && password === 'admin123') {
-      setIsLoggedIn(true);
-      navigation.replace('Home');
+      try {
+        await AsyncStorage.setItem('loggedIn', 'true');
+        navigation.replace('Home');
+      } catch (error) {
+        console.error("Erro ao salvar status de login:", error);
+        Alert.alert('Erro', 'Não foi possível efetuar o login.');
+      }
     } else {
       Alert.alert('Erro', 'Email ou senha incorretos.');
     }

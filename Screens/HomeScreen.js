@@ -1,18 +1,18 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Não se esqueça de limpar o storage no logout
 
 export default function HomeScreen({ navigation, setIsLoggedIn }) {
     const [saldo, setSaldo] = useState(0.25);
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-        navigation.replace('Welcome');
+
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('loggedIn'); // Limpa o status de login no AsyncStorage
+        setIsLoggedIn(false); // Atualiza o estado global de login
+        navigation.replace('Welcome'); // Navega para a tela de boas-vindas
     };
 
     return (
-
-
         <View style={styles.container}>
             <Text style={styles.title}>Saldo Atual</Text>
             <Text style={[styles.saldo, { color: saldo > 0 ? 'green' : 'red' }]}>
@@ -23,7 +23,6 @@ export default function HomeScreen({ navigation, setIsLoggedIn }) {
             <StatusBar style="auto" />
 
             <View style={styles.containerButton}>
-
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Receitas')}>
                     <Text style={styles.textButton}>Nova Receita</Text>
                 </TouchableOpacity>
@@ -33,7 +32,6 @@ export default function HomeScreen({ navigation, setIsLoggedIn }) {
                 <TouchableOpacity style={styles.button} onPress={handleLogout}>
                     <Text style={styles.textButton}>Logout</Text>
                 </TouchableOpacity>
-
             </View>
         </View>
     );
@@ -44,41 +42,39 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         justifyContent: 'center',
-      },
-      title: {
+    },
+    title: {
         fontSize: 32,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
-      },
-      saldo: {
+    },
+    saldo: {
         fontSize: 40,
         fontWeight: 'bold',
         textAlign: 'center',
-
-      },
-      label: {
+    },
+    label: {
         fontSize: 18,
         marginTop: 10,
-        textAlign: 'center'
-      },
-      containerButton:{
+        textAlign: 'center',
+    },
+    containerButton: {
         display: 'flex',
         flexDirection: 'row',
-        
-      },
-      button: {
+    },
+    button: {
         width: '30%',
         marginVertical: 10,
         marginHorizontal: 10,
         backgroundColor: 'blue',
         padding: 10,
-        borderRadius: 5
-      },
-      textButton: {
+        borderRadius: 5,
+    },
+    textButton: {
         color: "#fff",
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: 15
-      }
+        fontSize: 15,
+    },
 });

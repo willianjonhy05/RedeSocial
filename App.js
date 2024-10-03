@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import WelcomeScreen from './Screens/WelcomeScreen';
+import LoginScreen from './Screens/LoginScreen';
+import HomeScreen from './Screens/HomeScreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Welcome">
+        {!isLoggedIn ? (
+          <>
+            <Stack.Screen name="Welcome">
+              {props => <WelcomeScreen {...props} />}
+            </Stack.Screen>
+            <Stack.Screen name="Login">
+              {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
+          </>
+        ) : (
+          <Stack.Screen name="Home">
+            {props => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

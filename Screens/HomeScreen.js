@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
     containerButton: {
         display: 'flex',
         flexDirection: 'row',
+        gap: 10
     },
     button: {
         width: '32%',
         marginVertical: 10,
-        marginHorizontal: 10,
         backgroundColor: 'blue',
         padding: 10,
         borderRadius: 5,

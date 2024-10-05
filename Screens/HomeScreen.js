@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     containerButton: {
         display: 'flex',
         flexDirection: 'row',
-        gap: 10,
+        gap: 25,
+        justifyContent: 'center'
     },
     button: {
         width: '32%',

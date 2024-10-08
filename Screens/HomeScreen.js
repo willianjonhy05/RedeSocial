@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaldoInfo from '../components/Saldo';
 import Item from '../components/ItemMove';
-import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
+import { AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
 import AddMMovimentacao from '../components/AddMovimentacao';
+
 
 export default function HomeScreen() {
     const [saldo, setSaldo] = useState(0.25);
@@ -12,8 +13,16 @@ export default function HomeScreen() {
     const [receitasTotais, setReceitasTotais] = useState(0);
     const [despesasTotais, setDespesasTotais] = useState(0);
 
+    const carregarMovimentacoes = async () => {
+        const armazenadas = await AsyncStorage.getItem('movimentacoes');
+        if (armazenadas) {
+            const movimentacoesSalvas = JSON.parse(armazenadas);
+            setMovimentacoes(movimentacoesSalvas);
+        }
+    };
+
     useEffect(() => {
-        carregarMovimentacoes(setMovimentacoes); // Carrega as movimentações do AsyncStorage
+        carregarMovimentacoes(); 
     }, []);
 
     const handleNovaMovimentacao = async (novaMovimentacao) => {

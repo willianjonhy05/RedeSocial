@@ -1,15 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const carregarMovimentacoes = async (setMovimentacoes) => {
-    try {
-        const salvarMovimentacoes = await AsyncStorage.getItem('MovimentacoesFinanceiras');
-        if (salvarMovimentacoes) {
-            setMovimentacoes(JSON.parse(salvarMovimentacoes));
-        }
-    } catch (error) {
-        console.error("Erro ao carregar movimentações", error);
-    }
-};
 
 export const AddMovimentacoes = async (novaMovimentacao, movimentacoes, setMovimentacoes, setNovaMovimentacao) => {
     if (novaMovimentacao.trim() === '') return; // Prevenir entradas vazias

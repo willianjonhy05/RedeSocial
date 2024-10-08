@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './Screens/LoginScreen';
@@ -6,11 +6,19 @@ import HomeScreen from './Screens/HomeScreen';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import ReceitasScreen from './Screens/ReceitasScreen';
 import DespesasScreen from './Screens/DespesasScreen';
+import * as SplashScreen from 'expo-splash-screen'
 
 const Stack = createStackNavigator();
+SplashScreen.preventAutoHideAsync
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() =>{
+    setTimeout(async ()=> {
+      await SplashScreen.hideAsync();
+    },3000)
+  })
 
   return (
     <NavigationContainer>

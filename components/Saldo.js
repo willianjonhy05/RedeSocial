@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 
 export default function SaldoInfo({ saldo, receitasTotais, despesasTotais }) {
     return (
-        <View style={[ styles.saldoContainer,{backgroundColor : saldo >  0 ? '#E5F0DB' : '#F4E6E7'}]}>
+        <View style={[ styles.saldoContainer,{backgroundColor : saldo <  0 ? '#ff7675' : '#00b894'}]}>
             <Text style={styles.title}>Saldo Atual</Text>
             <Text style={styles.saldo}>
                 R$ {saldo.toFixed(2)}

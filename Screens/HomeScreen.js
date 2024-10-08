@@ -5,6 +5,7 @@ import SaldoInfo from '../components/Saldo';
 import MeuBotao from '../components/MeuBotao';
 import Item from '../components/ItemMove';
 import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
+import { movimentacao } from '../utils/moks';
 
 
 export default function HomeScreen(){
@@ -29,7 +30,17 @@ export default function HomeScreen(){
             text={'Movimentação'}
             title={'Movimentação'}
             />
-            <Item preco={'-14.00'} nome={'Hambúrguer'}/>
+            <FlatList
+            data={movimentacao}
+            keyExtractor={(item)=>item.id}
+            renderItem={({item}) =>(
+                <Item
+                preco={item.Valor}
+                nome={item.Nome}
+                tipo={item.Tipo}
+                />
+            )}
+            />
         </View>
     )
 

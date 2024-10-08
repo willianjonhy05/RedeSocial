@@ -1,13 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { movimentacao } from '../utils/moks';
 
-export default function Item({ preco, nome }) {
+export default function Item({ preco, nome, tipo}) {
+
+    const validacao = tipo ==='Despesa' ? `- R$ ${preco}` : `+ R$ ${preco}`;
+
     return (
         <View style={styles.container}>
-            <Text style={styles.preco}>{preco}</Text>
+            <Text style={styles.preco}>{validacao}</Text>
             <Text style={styles.divider}>|</Text>
             <Text style={styles.nome}>{nome}</Text>
-            <FontAwesome style={styles.circle} name="circle" size={24} color="#F3BABD" />
+            <FontAwesome style={styles.circle} name="circle" size={24} color={ tipo === 'Despesa' ? '#ff7675' : '#00b894'} />
         </View>
     );
 }
@@ -23,6 +27,7 @@ const styles = StyleSheet.create({
         height: 49,
         borderRadius: 6,
         paddingHorizontal: 10, // Adicionado para espaçamento interno
+        marginVertical: 10,
     },
     preco: {
         fontWeight: 'bold',

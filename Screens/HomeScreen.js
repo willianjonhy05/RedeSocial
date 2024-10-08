@@ -6,6 +6,7 @@ import MeuBotao from '../components/MeuBotao';
 import Item from '../components/ItemMove';
 import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
 import { movimentacao } from '../utils/moks';
+import AddMMovimentacao from '../components/AddMovimentacao';
 
 
 export default function HomeScreen(){
@@ -19,17 +20,23 @@ export default function HomeScreen(){
         carregarMovimentacoes(setMovimentacoes);
     }, []);
 
+
+
+
+
     return(
         <View style={styles.container}>
             <View style={styles.box}>
             <SaldoInfo saldo={saldo} receitasTotais={receitasTotais} despesasTotais={despesasTotais} />
             </View>
             
-            <MeuBotao
+
+            <AddMMovimentacao />
+            {/* <MeuBotao
             style={styles.box2}
             text={'Movimentação'}
             title={'Movimentação'}
-            />
+            /> */}
             <FlatList
             data={movimentacao}
             keyExtractor={(item)=>item.id}
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         alignItems: 'center',
-        position: 'fixed',
+        // position: 'fixed',
         paddingTop: 38,
     },
     box: {

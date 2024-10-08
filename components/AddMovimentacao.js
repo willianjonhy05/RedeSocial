@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
         fontSize: 20,
+        fontWeight: 'bold'
     },
     textLabel: {
         fontSize: 16,

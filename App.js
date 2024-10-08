@@ -6,7 +6,7 @@ import HomeScreen from './Screens/HomeScreen';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import ReceitasScreen from './Screens/ReceitasScreen';
 import DespesasScreen from './Screens/DespesasScreen';
-import HomeScreen2 from './Screens/HomeScreen';
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -19,14 +19,14 @@ export default function App() {
         <Stack.Screen name="Login">
           {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
         </Stack.Screen>
+        <Stack.Screen name="Home">
+          {props => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        </Stack.Screen>
         <Stack.Screen name="Receitas">
           {props => <ReceitasScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
         </Stack.Screen>
         <Stack.Screen name="Despesas">
           {props => <DespesasScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
-        </Stack.Screen>
-        <Stack.Screen name="Home">
-          {props => <HomeScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

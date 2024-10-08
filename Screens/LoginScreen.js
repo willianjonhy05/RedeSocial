@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput,  StyleSheet, Alert, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import IconImage from '../assets/icon.png'
+
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -37,43 +39,63 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Email</Text>
+      <Image source={IconImage} style={styles.image}/>
       <TextInput
         style={styles.input}
-        placeholder="Digite seu email"
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <Text style={styles.label}>Senha</Text>
       <TextInput
         style={styles.input}
-        placeholder="Digite sua senha"
+        placeholder="Senha"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}><Text style={styles.text}>Login</Text></TouchableOpacity>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
+    paddingBottom: 70,
+},
+  title: {
+    fontSize: 24,
+    marginBottom:20,
+    textAlign: 'center',
+},
+  input:{
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-  },
-});
+    borderRadius: 5,
+    padding: 10,
+    borderColor: '#ccc',
+    width : '75%',
+    marginVertical: 7,
+},
+   button : {
+    marginTop: 16,
+    backgroundColor: '#0984e3',
+    width: '75%',
+    alignItems: 'center',
+    height: 50,
+    borderRadius: 5,
+    justifyContent: 'center',
+   },
+   text :{
+    color: 'white'
+   },
+   image: {
+    width: 111,
+    height: 143,
+    position: 'fixed',
+    bottom: 40,
+   }
+})

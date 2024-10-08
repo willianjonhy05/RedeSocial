@@ -1,103 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Não se esqueça de limpar o storage no logout
-import { FlatList } from 'react-native-gesture-handler';
-import MeuBotao from '../components/MeuBotao';
-import MeuInput from '../components/MeuInput';
-import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
+import {View, ScrollView, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaldoInfo from '../components/Saldo';
+import MeuBotao from '../components/MeuBotao';
+import Item from '../components/ItemMove';
+import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
+import { movimentacao } from '../utils/moks';
 
-export default function HomeScreen({ navigation, setIsLoggedIn }) {
+
+export default function HomeScreen(){
     const [saldo, setSaldo] = useState(0.25);
     const [movimentacoes, setMovimentacoes] = useState([]);
     const [novaMovimentacao, setNovaMovimentacao] = useState('');
     const [receitasTotais, setReceitasTotais] = useState(0)
     const [despesasTotais, setDespesasTotais] = useState(0)
 
-    // Carregar movimentações do AsyncStorage quando a tela é montada
     useEffect(() => {
         carregarMovimentacoes(setMovimentacoes);
     }, []);
 
-
-
-    return (
-        <ScrollView style={styles.container}>
+    return(
+        <View style={styles.container}>
+            <View style={styles.box}>
             <SaldoInfo saldo={saldo} receitasTotais={receitasTotais} despesasTotais={despesasTotais} />
-
-            <View style={styles.containerButton}>
-                <MeuBotao
-                    title="Nova Receita"
-                    onPress={() => AddMovimentacoes(novaMovimentacao, movimentacoes, setMovimentacoes, setNovaMovimentacao)}
-                />
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Despesas')}>
-                    <Text style={styles.textButton}>Nova Despesa</Text>
-                </TouchableOpacity>
-                <MeuBotao
-                    title="Logout"
-                    onPress={() => handleLogout(setIsLoggedIn, navigation)}
-                />
             </View>
-
-            <View style={styles.ContainerList}>
-                <MeuInput
-                    value={novaMovimentacao}
-                    onChangeText={setNovaMovimentacao}
-                    placeholder="Nova Entrada"
-                />
-            </View>
-
-
-            <FlatList
-                data={movimentacoes}
-                renderItem={({ item }) => <Text style={styles.item}>R$ {item}</Text>}
-                keyExtractor={(item, index) => index.toString()}
+            
+            <MeuBotao
+            style={styles.box2}
+            text={'Movimentação'}
+            title={'Movimentação'}
             />
+            <FlatList
+            data={movimentacao}
+            keyExtractor={(item)=>item.id}
+            renderItem={({item}) =>(
+                <Item
+                preco={item.Valor}
+                nome={item.Nome}
+                tipo={item.Tipo}
+                />
+            )}
+            />
+        </View>
+    )
 
-        </ScrollView>
-    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 20,
-
+        flex:1,
+        alignItems: 'center',
+        position: 'fixed',
+        paddingTop: 38,
     },
-    containerButton: {
-        display: 'flex',
-        flexDirection: 'row',
-        gap: 25,
-        justifyContent: 'center'
+    box: {
+        width: 327,
+        height: 102,
     },
-    button: {
-        width: '32%',
-        marginVertical: 10,
-        backgroundColor: 'blue',
-        padding: 10,
-        borderRadius: 5,
-    },
-    textButton: {
-        color: "#fff",
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    ContainerList: {
-        justifyContent: 'center',
-        marginTop: 20,
-    },
-    Input: {
-        width: "95%",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-    },
-    item: {
-        fontSize: 18,
-        marginTop: 10,
-    }
-});
+})

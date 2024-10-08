@@ -1,67 +1,81 @@
-import {View, ScrollView, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import { View, ScrollView, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaldoInfo from '../components/Saldo';
-import MeuBotao from '../components/MeuBotao';
 import Item from '../components/ItemMove';
 import { carregarMovimentacoes, AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
-import { movimentacao } from '../utils/moks';
 import AddMMovimentacao from '../components/AddMovimentacao';
 
-
-export default function HomeScreen(){
+export default function HomeScreen() {
     const [saldo, setSaldo] = useState(0.25);
     const [movimentacoes, setMovimentacoes] = useState([]);
-    const [novaMovimentacao, setNovaMovimentacao] = useState('');
-    const [receitasTotais, setReceitasTotais] = useState(0)
-    const [despesasTotais, setDespesasTotais] = useState(0)
+    const [receitasTotais, setReceitasTotais] = useState(0);
+    const [despesasTotais, setDespesasTotais] = useState(0);
 
     useEffect(() => {
-        carregarMovimentacoes(setMovimentacoes);
+        carregarMovimentacoes(setMovimentacoes); // Carrega as movimentações do AsyncStorage
     }, []);
 
+    const handleNovaMovimentacao = async (novaMovimentacao) => {
+        // Atualizar movimentações
+        const novasMovimentacoes = [...movimentacoes, novaMovimentacao];
+        setMovimentacoes(novasMovimentacoes);
 
+        // Atualizar saldo, receitas e despesas
+        if (novaMovimentacao.tipo === 'receita') {
+            const novoSaldo = saldo + parseFloat(novaMovimentacao.valor);
+            const novasReceitas = receitasTotais + parseFloat(novaMovimentacao.valor);
+            setSaldo(novoSaldo);
+            setReceitasTotais(novasReceitas);
+        } else if (novaMovimentacao.tipo === 'despesa') {
+            const novoSaldo = saldo - parseFloat(novaMovimentacao.valor);
+            const novasDespesas = despesasTotais + parseFloat(novaMovimentacao.valor);
+            setSaldo(novoSaldo);
+            setDespesasTotais(novasDespesas);
+        }
 
+        // Salvar no AsyncStorage
+        await AsyncStorage.setItem('movimentacoes', JSON.stringify(novasMovimentacoes));
+    };
 
-
-    return(
+    return (
         <View style={styles.container}>
             <View style={styles.box}>
-            <SaldoInfo saldo={saldo} receitasTotais={receitasTotais} despesasTotais={despesasTotais} />
+                <SaldoInfo saldo={saldo} receitasTotais={receitasTotais} despesasTotais={despesasTotais} />
             </View>
-            
 
-            <AddMMovimentacao />
-            {/* <MeuBotao
-            style={styles.box2}
-            text={'Movimentação'}
-            title={'Movimentação'}
-            /> */}
+            {/* Passa a função handleNovaMovimentacao como prop */}
+            <AddMMovimentacao handleNovaMovimentacao={handleNovaMovimentacao} />
+
+
             <FlatList
-            data={movimentacao}
-            keyExtractor={(item)=>item.id}
-            renderItem={({item}) =>(
-                <Item
-                preco={item.Valor}
-                nome={item.Nome}
-                tipo={item.Tipo}
-                />
-            )}
+                data={movimentacoes}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <Item
+                        preco={item.valor}
+                        nome={item.descricao}
+                        tipo={item.tipo}
+                    />
+                )}
             />
-        </View>
-    )
 
+
+
+
+
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         alignItems: 'center',
-        // position: 'fixed',
         paddingTop: 38,
     },
     box: {
         width: 327,
         height: 102,
     },
-})
+});

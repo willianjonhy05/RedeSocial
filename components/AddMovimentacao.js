@@ -3,7 +3,7 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'reac
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function AddMMovimentacao() {
+export default function AddMMovimentacao({ handleNovaMovimentacao }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [descricao, setDescricao] = useState('');
     const [data, setData] = useState('');
@@ -13,13 +13,17 @@ export default function AddMMovimentacao() {
 
     const handleCadastrar = () => {
         // Lógica para cadastrar a movimentação
-        console.log({
+        const novaMovimentacao = {
             descricao,
             data,
             hora,
             valor,
             tipo
-        });
+        };
+
+        // Enviar a nova movimentação para o componente pai
+        handleNovaMovimentacao(novaMovimentacao);
+
         // Limpar campos e fechar o modal
         setDescricao('');
         setData('');
@@ -28,7 +32,6 @@ export default function AddMMovimentacao() {
         setTipo('');
         setModalVisible(false);
     };
-
     return (
         <View style={styles.centeredView}>
             <Modal

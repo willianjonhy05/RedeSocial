@@ -4,14 +4,14 @@ import { movimentacao } from '../utils/moks';
 
 export default function Item({ preco, nome, tipo}) {
 
-    const validacao = tipo ==='Despesa' ? `- R$ ${preco}` : `+ R$ ${preco}`;
+    const validacao = tipo ==='despesa' ? `- R$ ${preco}` : `+ R$ ${preco}`;
 
     return (
         <View style={styles.container}>
             <Text style={styles.preco}>{validacao}</Text>
             <Text style={styles.divider}>|</Text>
             <Text style={styles.nome}>{nome}</Text>
-            <FontAwesome style={styles.circle} name="circle" size={24} color={ tipo === 'Despesa' ? '#ff7675' : '#00b894'} />
+            <FontAwesome style={styles.circle} name="circle" size={24} color={ tipo === 'despesa' ? '#ff7675' : '#00b894'} />
         </View>
     );
 }

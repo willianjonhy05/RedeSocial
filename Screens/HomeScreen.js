@@ -58,6 +58,7 @@ export default function HomeScreen() {
 
 
             <FlatList
+            style={styles.lista}
                 data={movimentacoes}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
@@ -87,4 +88,7 @@ const styles = StyleSheet.create({
         width: 327,
         height: 102,
     },
+    lista: {
+        marginTop: 30,
+    }
 });

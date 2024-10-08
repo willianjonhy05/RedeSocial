@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 14,
-        // opacity: 0.65,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, Pressable, View, TextInput } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+
 
 export default function AddMMovimentacao({ handleNovaMovimentacao }) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -10,6 +12,7 @@ export default function AddMMovimentacao({ handleNovaMovimentacao }) {
     const [hora, setHora] = useState('');
     const [valor, setValor] = useState('');
     const [tipo, setTipo] = useState('');
+
 
     const handleCadastrar = () => {
         // Lógica para cadastrar a movimentação
@@ -107,34 +110,35 @@ export default function AddMMovimentacao({ handleNovaMovimentacao }) {
                             <Pressable
                                 style={styles.buttonCadastrar}
                                 onPress={handleCadastrar}>
-                                <Text style={styles.textStyle}>Cadastrar</Text>
+                                <Text style={styles.textButton}>Cadastrar</Text>
                             </Pressable>
 
                             <Pressable
                                 style={styles.buttonClose}
                                 onPress={() => setModalVisible(false)}>
-                                <Text style={styles.textStyle}>Cancelar</Text>
+                                <Text style={styles.textButton}>Cancelar</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
             </Modal>
 
-            <Pressable
-                style={styles.buttonOpen}
+                <View style={styles.box2}>
+                <Text style={styles.title}>Movimentação</Text>
+                <TouchableOpacity
+                style={styles.button}
                 onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyle}><AntDesign name="plus" size={18} color="white" /> Movimentação</Text>
-            </Pressable>
+                <Text style={styles.textButton}><AntDesign name="plus" size={18} color="white" /> Movimentação</Text>
+                </TouchableOpacity>
+                </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
     },
     fullScreenView: {
         flex: 1,
@@ -158,25 +162,8 @@ const styles = StyleSheet.create({
     formUm: {
         width: '48%',
     },
-    buttonOpen: {
-        // backgroundColor: '#333638',
-        // borderRadius: 20,
-        // padding: 10,
-        // elevation: 2,
-        width: 327,
-        height: 50,
-        marginVertical: 50,
-        backgroundColor: '#333638',
-        padding: 10,
-        borderRadius: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-    },
     buttonContainer: {
-        position: 'absolute',
-        bottom: 20,  // Posição dos botões fixa na parte de baixo
+        margin: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
@@ -184,23 +171,21 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         backgroundColor: 'red',
-        borderRadius: 20,
+        borderRadius: 5,
         padding: 10,
         elevation: 2,
         width: '48%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     buttonCadastrar: {
         backgroundColor: '#333638',
-        borderRadius: 20,
+        borderRadius: 5,
         padding: 10,
         elevation: 2,
         width: '48%',
-    },
-    textStyle: {
-        color: '#FFF',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 18,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     modalText: {
         marginBottom: 15,
@@ -245,5 +230,28 @@ const styles = StyleSheet.create({
     },
     selectedButton: {
         backgroundColor: '#333638',
+    },
+    title:{
+        fontSize: 16,
+    },
+    button: {
+        marginVertical: 5,
+        width: 327,
+        height: 50,
+        backgroundColor: '#333638',
+        padding: 10,
+        borderRadius: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 5,
+    },
+    textButton: {
+        color: "#fff",
+        fontWeight: 'bold',
+        fontSize: 15,
+    },
+    box2:{
+        marginTop: 30,
     },
 });

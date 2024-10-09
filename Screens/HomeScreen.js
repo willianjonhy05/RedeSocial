@@ -1,11 +1,9 @@
-import { View, ScrollView, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, SectionList, Text, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaldoInfo from '../components/Saldo';
 import Item from '../components/ItemMove';
-import { AddMovimentacoes, handleLogout } from '../utils/funcoesMovimentacoes';
 import AddMMovimentacao from '../components/AddMovimentacao';
-
 
 export default function HomeScreen() {
     const [saldo, setSaldo] = useState(0.25);
@@ -26,11 +24,9 @@ export default function HomeScreen() {
     }, []);
 
     const handleNovaMovimentacao = async (novaMovimentacao) => {
-        // Atualizar movimentações
         const novasMovimentacoes = [...movimentacoes, novaMovimentacao];
         setMovimentacoes(novasMovimentacoes);
 
-        // Atualizar saldo, receitas e despesas
         if (novaMovimentacao.tipo === 'receita') {
             const novoSaldo = saldo + parseFloat(novaMovimentacao.valor);
             const novasReceitas = receitasTotais + parseFloat(novaMovimentacao.valor);
@@ -43,8 +39,25 @@ export default function HomeScreen() {
             setDespesasTotais(novasDespesas);
         }
 
-        // Salvar no AsyncStorage
         await AsyncStorage.setItem('movimentacoes', JSON.stringify(novasMovimentacoes));
+    };
+
+    // Função para agrupar movimentações por data
+    const agruparMovimentacoesPorData = () => {
+        const grupos = movimentacoes.reduce((acc, movimentacao) => {
+            const data = movimentacao.data; // Supondo que o campo 'data' esteja em formato 'DD/MM/YYYY'
+            if (!acc[data]) {
+                acc[data] = [];
+            }
+            acc[data].push(movimentacao);
+            return acc;
+        }, {});
+
+        // Transformar o objeto em um array de seções
+        return Object.keys(grupos).sort((a, b) => new Date(b) - new Date(a)).map((data) => ({
+            title: data,
+            data: grupos[data],
+        }));
     };
 
     return (
@@ -56,10 +69,8 @@ export default function HomeScreen() {
             {/* Passa a função handleNovaMovimentacao como prop */}
             <AddMMovimentacao handleNovaMovimentacao={handleNovaMovimentacao} />
 
-
-            <FlatList
-            style={styles.lista}
-                data={movimentacoes}
+            <SectionList
+                sections={agruparMovimentacoesPorData()}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <Item
@@ -68,12 +79,10 @@ export default function HomeScreen() {
                         tipo={item.tipo}
                     />
                 )}
+                renderSectionHeader={({ section: { title } }) => (
+                    <Text style={styles.header}>{title}</Text>
+                )}
             />
-
-
-
-
-
         </View>
     );
 }
@@ -88,7 +97,14 @@ const styles = StyleSheet.create({
         width: 327,
         height: 102,
     },
-    lista: {
-        marginTop: 30,
-    }
+    header: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        marginTop: 20,
+        backgroundColor: '#f4f4f4',
+        paddingVertical: 2,
+        paddingHorizontal: 5,
+        alignSelf: 'stretch',
+        textAlign: 'left',
+    },
 });

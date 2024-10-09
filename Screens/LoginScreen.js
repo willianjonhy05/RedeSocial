@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
    image: {
     width: 111,
     height: 143,
-    position: 'fixed',
     bottom: 40,
    }
 })

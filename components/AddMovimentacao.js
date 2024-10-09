@@ -15,6 +15,14 @@ export default function AddMMovimentacao({ handleNovaMovimentacao }) {
 
 
     const handleCadastrar = () => {
+
+
+        if (!descricao || !data || !hora || !valor || !tipo) {
+            Alert.alert('Erro', 'Por favor, preencha todos os campos antes de cadastrar a movimentação.');
+            return; // Impede que a movimentação seja cadastrada se faltar algum campo
+        }
+
+
         // Lógica para cadastrar a movimentação
         const novaMovimentacao = {
             descricao,

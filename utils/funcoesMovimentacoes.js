@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export const AddMovimentacoes = async (novaMovimentacao, movimentacoes, setMovimentacoes, setNovaMovimentacao) => {
     if (novaMovimentacao.trim() === '') return; // Prevenir entradas vazias
     try {
@@ -17,8 +16,8 @@ export const handleLogout = async (setIsLoggedIn, navigation) => {
     try {
         await AsyncStorage.removeItem('loggedIn'); // Limpa o status de login no AsyncStorage
         setIsLoggedIn(false); // Atualiza o estado global de login
-        navigation.replace('Welcome'); // Navega para a tela de boas-vindas
+        navigation.replace('Login'); // Navega para a tela de Login
     } catch (error) {
-        console.error("Erro ao fazer logout", error);
+        console.error("Erro ao fazer logout:", error);
     }
 };
